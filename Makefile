@@ -68,11 +68,10 @@ lint-manifests: kustomize kube-linter ## Run kube-linter on Kubernetes manifests
 		$(KUBE_LINTER) lint --config=./config/.kube-linter.yaml -
 
 .PHONY: hadolint
-hadolint: hadolint-plugin ## Run hadolint on all Dockerfiles.
+hadolint: hadolint-kvm hadolint-tap hadolint-tun ## Run hadolint on all Dockerfiles.
 
-.PHONY: hadolint-plugin
-hadolint-plugin: ## Run hadolint on plugin Dockerfile.
-	$(CONTAINER_TOOL) run --rm -i hadolint/hadolint < Dockerfile
+hadolint-%: ## Run hadolint on plugin Dockerfile.
+	$(CONTAINER_TOOL) run --rm -i hadolint/hadolint < cmd/$*-device-plugin/Dockerfile
 
 .PHONY: verify-licenses
 verify-licenses: addlicense ## Run addlicense to verify if files have license headers.

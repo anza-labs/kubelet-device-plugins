@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: tap-plugin
+  name: plugin-tap
   labels:
-    app.kubernetes.io/name: tap-plugin
+    app.kubernetes.io/name: plugin-tap
     app.kubernetes.io/managed-by: kustomize
 spec:
   selector:
     matchLabels:
-      app: tap-plugin
+      app: plugin-tap
   template:
     metadata:
       annotations:
         kubectl.kubernetes.io/default-container: plugin
       labels:
-        app: tap-plugin
+        app: plugin-tap
     spec:
       affinity:
         nodeAffinity:
@@ -38,8 +38,9 @@ spec:
           command:
             - /tap-device-plugin
           args:
-            - -log-level=info
-            - -devices=10
+            - --log-level=info
+            - --device-names=tap0
+            - --devices=10
           ports:
             - name: metrics
               containerPort: 8080

@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: tun-plugin
+  name: plugin-kvm
   labels:
-    app.kubernetes.io/name: tun-plugin
+    app.kubernetes.io/name: plugin-kvm
     app.kubernetes.io/managed-by: kustomize
 spec:
   selector:
     matchLabels:
-      app: tun-plugin
+      app: plugin-kvm
   template:
     metadata:
       annotations:
         kubectl.kubernetes.io/default-container: plugin
       labels:
-        app: tun-plugin
+        app: plugin-kvm
     spec:
       affinity:
         nodeAffinity:
@@ -34,12 +34,12 @@ spec:
       securityContext: {}
       containers:
         - name: plugin
-          image: tun:latest
+          image: kvm:latest
           command:
-            - /tun-device-plugin
+            - /kvm-device-plugin
           args:
-            - -log-level=info
-            - -devices=10
+            - --log-level=info
+            - --devices=10
           ports:
             - name: metrics
               containerPort: 8080
@@ -60,7 +60,7 @@ spec:
               command:
                 - /grpc_health_probe
                 - -addr
-                - unix:///var/lib/kubelet/device-plugins/tun.sock
+                - unix:///var/lib/kubelet/device-plugins/kvm.sock
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
@@ -68,7 +68,7 @@ spec:
               command:
                 - /grpc_health_probe
                 - -addr
-                - unix:///var/lib/kubelet/device-plugins/tun.sock
+                - unix:///var/lib/kubelet/device-plugins/kvm.sock
             initialDelaySeconds: 2
             periodSeconds: 5
       volumes:

@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kvm
+spec:
+  steps:
+  - name: prerequsistes
+    try:
+    - assert:
+        resource:
+          apiVersion: apps/v1
+          kind: DaemonSet
+          metadata:
+            name: kubelet-device-plugin-kvm
+            namespace: anza-labs-kubelet-plugins
+          status:
+            numberAvailable: 1
+  - name: assess the device
+    try:
+    - create:
+        resource:
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: check-kvm
+          spec:
+            template:
+              spec:
+                restartPolicy: Never
+                containers:
+                  - name: kvm-checker
+                    image: busybox
+                    command: ["sh", "-c", "[ -e /dev/kvm ]"]
+                    resources:
+                      requests:
+                        devices.anza-labs.dev/kvm: '1'
+                      limits:
+                        devices.anza-labs.dev/kvm: '1'
+    - assert:
+        timeout: 10m
+        resource:
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: check-kvm
+    - wait:
+        timeout: 1m
+        apiVersion: batch/v1
+        kind: Job
+        name: check-kvm
+        for:
+          condition:
+            name: complete

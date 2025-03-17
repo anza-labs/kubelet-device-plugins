@@ -2,7 +2,7 @@
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: smoke
+  name: tun
 spec:
   steps:
   - name: prerequsistes
@@ -12,7 +12,7 @@ spec:
           apiVersion: apps/v1
           kind: DaemonSet
           metadata:
-            name: tun-device-plugin
+            name: kubelet-device-plugin-tun
             namespace: anza-labs-kubelet-plugins
           status:
             numberAvailable: 1
