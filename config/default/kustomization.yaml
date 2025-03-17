@@ -9,10 +9,7 @@ kind: Kustomization
 images:
 - name: kvm
   newName: localhost:5005/kvm-device-plugin
-  newTag: dev-1ea248
-- name: plugin
-  newName: localhost:5005/tun-device-plugin
-  newTag: dev-5c6100-dirty
+  newTag: dev-706411-dirty
 - name: tun
   newName: localhost:5005/tun-device-plugin
-  newTag: dev-1ea248
+  newTag: dev-706411-dirty
