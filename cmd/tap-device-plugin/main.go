@@ -38,7 +38,8 @@ var (
 func main() {
 	flag.StringVar(&logLevel, "log-level", "info", "Set log level (debug, info, warn, error)")
 	flag.UintVar(&maxDevices, "devices", 10, "Set number of devices presented to kubelet")
-	flag.StringArrayVar(&deviceNames, "device-names", []string{}, "List of device names that should be discovered by plugin")
+	flag.StringArrayVar(&deviceNames, "device-names", []string{},
+		"List of device names that should be discovered by plugin")
 	flag.Parse()
 
 	var level slog.Level

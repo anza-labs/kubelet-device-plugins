@@ -30,11 +30,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-	"k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
 	"github.com/anza-labs/kubelet-device-plugins/pkg/discovery"
 	"github.com/anza-labs/kubelet-device-plugins/pkg/metrics"
 	"github.com/anza-labs/kubelet-device-plugins/pkg/plugin"
+
+	"k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 )
 
 const (
