@@ -61,7 +61,9 @@ func (p *Plugin) DevicePluginServer(plugin v1beta1.DevicePluginServer) *grpc.Ser
 	)
 
 	metrics.GRPCServerMetrics.InitializeMetrics(srv)
-	v1beta1.RegisterDevicePluginServer(srv, plugin)
+	if plugin != nil {
+		v1beta1.RegisterDevicePluginServer(srv, plugin)
+	}
 
 	return srv
 }
