@@ -6,7 +6,7 @@
 [![GitHub release](https://img.shields.io/github/release/anza-labs/kubelet-device-plugins)](https://GitHub.com/anza-labs/kubelet-device-plugins/releases/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/anza-labs/kubelet-device-plugins)](https://goreportcard.com/report/github.com/anza-labs/kubelet-device-plugins)
 
-`kubelet-device-plugins` is a Kubernetes Device Plugin that manages access to `/dev/kvm` (Kernel-based Virtual Machine) devices. It allows workloads running in Kubernetes to request KVM access via the Device Plugin interface, ensuring proper communication with the kubelet.
+`kubelet-device-plugins` is a Kubernetes Device Plugin that manages access to Linux devices.
 
 - [kubelet-device-plugins](#kubelet-device-plugins)
   - [Features](#features)
@@ -121,7 +121,7 @@ spec:
 
 ## License
 
-`kubelet-device-plugins` is licensed under the [Apache-2.0][license].
+`kubelet-device-plugins` are licensed under the [Apache-2.0][license].
 
 ## Attributions
 

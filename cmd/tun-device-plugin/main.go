@@ -20,17 +20,11 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	flag "github.com/spf13/pflag"
 
 	"github.com/anza-labs/kubelet-device-plugins/internal/entrypoint"
 	"github.com/anza-labs/kubelet-device-plugins/pkg/servers/tundeviceplugin"
-)
-
-const (
-	pluginNamespace = "devices.anza-labs.dev"
-	gracePeriod     = 5 * time.Second
 )
 
 var (
@@ -58,7 +52,7 @@ func main() {
 	}
 	log := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: level}))
 
-	tun := tundeviceplugin.New(pluginNamespace, maxDevices, log)
+	tun := tundeviceplugin.New(entrypoint.PluginNamespace, maxDevices, log)
 
 	ctx, stop := signal.NotifyContext(context.Background(),
 		os.Interrupt,

@@ -20,18 +20,12 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	flag "github.com/spf13/pflag"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/anza-labs/kubelet-device-plugins/internal/entrypoint"
 	"github.com/anza-labs/kubelet-device-plugins/pkg/servers/tapdeviceplugin"
-)
-
-const (
-	pluginNamespace = "devices.anza-labs.dev"
-	gracePeriod     = 5 * time.Second
 )
 
 var (
@@ -79,7 +73,7 @@ func run(ctx context.Context, log *slog.Logger, deviceNames []string) error {
 
 	for _, name := range deviceNames {
 		eg.Go(func() error {
-			tap, err := tapdeviceplugin.New(pluginNamespace, name, maxDevices, log)
+			tap, err := tapdeviceplugin.New(entrypoint.PluginNamespace, name, maxDevices, log)
 			if err != nil {
 				return err
 			}

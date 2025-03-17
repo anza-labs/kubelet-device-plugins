@@ -37,7 +37,8 @@ import (
 )
 
 const (
-	gracePeriod = 5 * time.Second
+	PluginNamespace = "devices.anza-labs.dev"
+	gracePeriod     = 5 * time.Second
 )
 
 type Server interface {
