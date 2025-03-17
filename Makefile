@@ -68,7 +68,7 @@ lint-manifests: kustomize kube-linter ## Run kube-linter on Kubernetes manifests
 		$(KUBE_LINTER) lint --config=./config/.kube-linter.yaml -
 
 .PHONY: hadolint
-hadolint: hadolint-kvm hadolint-tap hadolint-tun ## Run hadolint on all Dockerfiles.
+hadolint: hadolint-kvm hadolint-tun ## Run hadolint on all Dockerfiles.
 
 hadolint-%: ## Run hadolint on plugin Dockerfile.
 	$(CONTAINER_TOOL) run --rm -i hadolint/hadolint < cmd/$*-device-plugin/Dockerfile
@@ -97,7 +97,7 @@ release: ## Runs the script that generates new release.
 # (i.e. docker build --platform linux/arm64). However, you must enable docker buildKit for it.
 # More info: https://docs.docker.com/develop/develop-images/build_enhancements/
 .PHONY: docker-build
-docker-build: docker-build-kvm docker-build-tap docker-build-tun ## Build all docker images.
+docker-build: docker-build-kvm docker-build-tun ## Build all docker images.
 
 docker-build-%: ## Build docker image with the plugin.
 	$(CONTAINER_TOOL) build \
@@ -106,7 +106,7 @@ docker-build-%: ## Build docker image with the plugin.
 		--tag=$(REPOSITORY)/$*-device-plugin:$(TAG) .
 
 .PHONY: docker-push
-docker-push: docker-push-kvm docker-push-tap docker-push-tun ## Push all docker images.
+docker-push: docker-push-kvm docker-push-tun ## Push all docker images.
 
 docker-push-%: ## Push docker image with the controller.
 	$(CONTAINER_TOOL) push $(REPOSITORY)/$*-device-plugin:$(TAG)
@@ -115,7 +115,6 @@ docker-push-%: ## Push docker image with the controller.
 build-installer: kustomize ## Generate a consolidated YAML with CRDs and deployment.
 	mkdir -p dist
 	cd config/default && $(KUSTOMIZE) edit set image kvm=$(REPOSITORY)/kvm-device-plugin:$(TAG)
-	cd config/default && $(KUSTOMIZE) edit set image tap=$(REPOSITORY)/tap-device-plugin:$(TAG)
 	cd config/default && $(KUSTOMIZE) edit set image tun=$(REPOSITORY)/tun-device-plugin:$(TAG)
 	$(KUSTOMIZE) build config/default > dist/install.yaml
 
@@ -136,7 +135,6 @@ cluster-reset: kind ctlptl
 .PHONY: deploy
 deploy: kustomize ## Deploy controller to the K8s cluster specified in ~/.kube/config.
 	cd config/default && $(KUSTOMIZE) edit set image kvm=$(REPOSITORY)/kvm-device-plugin:$(TAG)
-	cd config/default && $(KUSTOMIZE) edit set image tap=$(REPOSITORY)/tap-device-plugin:$(TAG)
 	cd config/default && $(KUSTOMIZE) edit set image tun=$(REPOSITORY)/tun-device-plugin:$(TAG)
 	$(KUSTOMIZE) build config/default | $(KUBECTL) apply -f -
 

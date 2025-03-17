@@ -30,8 +30,6 @@ import (
 const (
 	defaultKvmPluginImageName = "kvm"
 	defaultKvmPluginImageRef  = "ghcr.io/anza-labs/kvm-device-plugin"
-	defaultTapPluginImageName = "tap"
-	defaultTapPluginImageRef  = "ghcr.io/anza-labs/tap-device-plugin"
 	defaultTunPluginImageName = "tun"
 	defaultTunPluginImageRef  = "ghcr.io/anza-labs/tun-device-plugin"
 )
@@ -132,8 +130,6 @@ func main() {
 	versionFlag := flag.String("version", "", "Tagged version to build")
 	kvmImageFlag := flag.String("kvm-plugin-image-name", defaultKvmPluginImageName, "Default image name")
 	newKvmImageFlag := flag.String("kvm-plugin-image", defaultKvmPluginImageRef, "Default image reference")
-	tapImageFlag := flag.String("tap-plugin-image-name", defaultTapPluginImageName, "Default image name")
-	newTapImageFlag := flag.String("tap-plugin-image", defaultTapPluginImageRef, "Default image reference")
 	tunImageFlag := flag.String("tun-plugin-image-name", defaultTunPluginImageName, "Default image name")
 	newTunImageFlag := flag.String("tun-plugin-image", defaultTunPluginImageRef, "Default image reference")
 
@@ -154,11 +150,6 @@ func main() {
 		{
 			"name":    *kvmImageFlag,
 			"newName": *newKvmImageFlag,
-			"newTag":  *versionFlag,
-		},
-		{
-			"name":    *tapImageFlag,
-			"newName": *newTapImageFlag,
 			"newTag":  *versionFlag,
 		},
 		{

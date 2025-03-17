@@ -3,5 +3,4 @@ kind: Kustomization
 resources:
 - namespace.yaml
 - plugin-kvm.yaml
-- plugin-tap.yaml
 - plugin-tun.yaml

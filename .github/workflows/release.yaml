@@ -44,7 +44,6 @@ jobs:
       matrix:
         image:
           - kvm-device-plugin
-          - tap-device-plugin
           - tun-device-plugin
     steps:
       - uses: actions/checkout@v4

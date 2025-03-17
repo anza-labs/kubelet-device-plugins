@@ -13,9 +13,6 @@ images:
 - name: plugin
   newName: localhost:5005/tun-device-plugin
   newTag: dev-5c6100-dirty
-- name: tap
-  newName: localhost:5005/tap-device-plugin
-  newTag: dev-1ea248
 - name: tun
   newName: localhost:5005/tun-device-plugin
   newTag: dev-1ea248

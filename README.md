@@ -13,7 +13,6 @@
   - [Installation](#installation)
   - [Usage](#usage)
     - [KVM](#kvm)
-    - [TAP](#tap)
     - [TUN](#tun)
   - [How It Works](#how-it-works)
   - [Compatibility](#compatibility)
@@ -57,33 +56,6 @@ spec:
           devices.anza-labs.dev/kvm: '1' # Request KVM device
         limits:
           devices.anza-labs.dev/kvm: '1' # Limit KVM device
-```
-
-### TAP
-
-To request access to `tapX` in a pod, specify the device resource in the `resources` section:
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: kvm-checker
-spec:
-  restartPolicy: Never
-  containers:
-    - name: kvm-checker
-      image: alpine
-      command:
-        - sh
-        - -c
-        - |
-          apk add --no-cacke iproute2;
-          ip tuntap show dev "${TAP_DEVICE_NAME}";
-      resources:
-        requests:
-          devices.anza-labs.dev/tap0: '1' # Request TAP device
-        limits:
-          devices.anza-labs.dev/tap0: '1' # Limit TAP device
 ```
 
 ### TUN
