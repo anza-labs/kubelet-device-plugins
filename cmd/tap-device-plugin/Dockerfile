@@ -19,20 +19,20 @@ RUN xx-go mod download
 
 # Copy the go source
 COPY internal/ internal/
-COPY cmd/tun-device-plugin/main.go cmd/tun-device-plugin/main.go
+COPY cmd/tap-device-plugin/main.go cmd/tap-device-plugin/main.go
 COPY pkg/ pkg/
 
 # Build
 ENV CGO_ENABLED=0
-RUN xx-go build -trimpath -a -o tun-device-plugin cmd/tun-device-plugin/main.go && \
-    xx-verify tun-device-plugin
+RUN xx-go build -trimpath -a -o tap-device-plugin cmd/tap-device-plugin/main.go && \
+    xx-verify tap-device-plugin
 
 # Use distroless as minimal base image to package the plugin binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
 # hadolint ignore=DL3007
 FROM gcr.io/distroless/static:latest
 WORKDIR /
-COPY --from=builder /workspace/tun-device-plugin .
+COPY --from=builder /workspace/tap-device-plugin .
 COPY --from=probe /ko-app/grpc-health-probe /grpc_health_probe
 
-ENTRYPOINT ["/tun-device-plugin"]
+ENTRYPOINT ["/tap-device-plugin"]

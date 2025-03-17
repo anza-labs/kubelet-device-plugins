@@ -135,7 +135,9 @@ cluster-reset: kind ctlptl
 
 .PHONY: deploy
 deploy: kustomize ## Deploy controller to the K8s cluster specified in ~/.kube/config.
-	cd config/default && $(KUSTOMIZE) edit set image plugin=$(REPOSITORY)/tun-device-plugin:$(TAG)
+	cd config/default && $(KUSTOMIZE) edit set image kvm=$(REPOSITORY)/kvm-device-plugin:$(TAG)
+	cd config/default && $(KUSTOMIZE) edit set image tap=$(REPOSITORY)/tap-device-plugin:$(TAG)
+	cd config/default && $(KUSTOMIZE) edit set image tun=$(REPOSITORY)/tun-device-plugin:$(TAG)
 	$(KUSTOMIZE) build config/default | $(KUBECTL) apply -f -
 
 .PHONY: undeploy

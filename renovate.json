@@ -16,6 +16,16 @@
   ],
   "customManagers": [
     {
+      "customType": "regex",
+      "fileMatch": [
+        "kind.yaml$"
+      ],
+      "matchStrings": [
+        "\\s+image:\\s(?<depName>.*?):(?<currentValue>\\S+)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
       "fileMatch": [
         "^Makefile$"
       ],

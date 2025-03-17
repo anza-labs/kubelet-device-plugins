@@ -40,17 +40,22 @@ func New(namespace, tap string, devices uint, log *slog.Logger) (*Server, error)
 		log = slog.New(slog.DiscardHandler)
 	}
 	s := &Server{
-		log:       log,
+		log:       log.With(slog.String("device_name", tap)),
+		name:      tap,
 		namespace: namespace,
 		devices:   devices,
 		update:    make(chan struct{}),
 		devs:      []*v1beta1.Device{},
 	}
 
-	return s, s.discover()
+	return s, s.Discover()
 }
 
-func (s *Server) discover() error {
+func (s *Server) Update() {
+	s.update <- struct{}{}
+}
+
+func (s *Server) Discover() error {
 	interfaces, err := net.Interfaces()
 	if err != nil {
 		return fmt.Errorf("failed to discover interfaces: %w", err)
@@ -58,14 +63,19 @@ func (s *Server) discover() error {
 
 	for _, iface := range interfaces {
 		if iface.Name == s.name {
+			s.log.Debug("Discovered TAP device")
+
 			for i := uint(0); i < s.devices; i++ {
 				s.devs = append(s.devs, &v1beta1.Device{
 					ID:     fmt.Sprintf("%sd%d", s.name, i),
 					Health: v1beta1.Healthy,
 				})
 			}
+			return nil
 		}
 	}
+
+	s.log.Error("No TAP device found")
 	return nil
 }
 

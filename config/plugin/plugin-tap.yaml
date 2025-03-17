@@ -56,23 +56,22 @@ spec:
             limits:
               cpu: 500m
               memory: 128Mi
-          # TODO:
-          # livenessProbe:
-          #   exec:
-          #     command:
-          #       - /grpc_health_probe
-          #       - -addr
-          #       - unix:///var/lib/kubelet/device-plugins/health.sock
-          #   initialDelaySeconds: 5
-          #   periodSeconds: 10
-          # readinessProbe:
-          #   exec:
-          #     command:
-          #       - /grpc_health_probe
-          #       - -addr
-          #       - unix:///var/lib/kubelet/device-plugins/health.sock
-          #   initialDelaySeconds: 2
-          #   periodSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - /grpc_health_probe
+                - -addr
+                - unix:///health.sock
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - /grpc_health_probe
+                - -addr
+                - unix:///health.sock
+            initialDelaySeconds: 2
+            periodSeconds: 5
       volumes:
         - name: device-plugins
           hostPath:

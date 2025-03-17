@@ -32,6 +32,7 @@ import (
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
+	"github.com/anza-labs/kubelet-device-plugins/pkg/discovery"
 	"github.com/anza-labs/kubelet-device-plugins/pkg/metrics"
 	"github.com/anza-labs/kubelet-device-plugins/pkg/plugin"
 )
@@ -47,7 +48,17 @@ type Server interface {
 	Socket() string
 }
 
-func Run(ctx context.Context, log *slog.Logger, devicePluginServer Server) error {
+type HealthServer interface {
+	grpc_health_v1.HealthServer
+	SetServingStatus(service string, servingStatus grpc_health_v1.HealthCheckResponse_ServingStatus)
+}
+
+func Run(
+	ctx context.Context,
+	log *slog.Logger,
+	devicePluginServer Server,
+	healthServer HealthServer,
+) error {
 	log.Info("Starting plugin")
 	eg, ctx := errgroup.WithContext(ctx)
 
@@ -56,40 +67,64 @@ func Run(ctx context.Context, log *slog.Logger, devicePluginServer Server) error
 	grpcServer := dps.DevicePluginServer(devicePluginServer)
 	httpServer := metricsServer()
 
-	healthServer := health.NewServer()
+	if healthServer == nil {
+		healthServer = health.NewServer()
+	}
 	grpc_health_v1.RegisterHealthServer(grpcServer, healthServer)
 
 	eg.Go(func() error {
 		log.Info("Starting shutdown controller")
 		return shutdown(ctx, log, grpcServer, httpServer)
 	})
-	eg.Go(func() error {
-		log.Info("Registering device plugin")
-		return dps.RegisterDevicePlugin(ctx, devicePluginServer.Name(), devicePluginServer.Socket())
-	})
-	eg.Go(func() error {
-		lis, cleanup, err := listener(ctx, log, "tcp://0.0.0.0:8080")
-		if err != nil {
-			return fmt.Errorf("failed to create http listener: %w", err)
+
+	if devicePluginServer != nil {
+		eg.Go(func() error {
+			log.Info("Registering device plugin")
+			return dps.RegisterDevicePlugin(ctx, devicePluginServer.Name(), devicePluginServer.Socket())
+		})
+
+		eg.Go(func() error {
+			lis, cleanup, err := listener(ctx, log, "tcp://0.0.0.0:8080")
+			if err != nil {
+				return fmt.Errorf("failed to create http listener: %w", err)
+			}
+			defer cleanup()
+
+			log.Info("Starting HTTP server")
+			return httpServer.Serve(lis)
+		})
+
+		eg.Go(func() error {
+			lis, cleanup, err := listener(ctx, log, devicePluginServer.Socket())
+			if err != nil {
+				return fmt.Errorf("failed to create grpc listener: %w", err)
+			}
+			defer cleanup()
+
+			// Mark server as healthy
+			healthServer.SetServingStatus(devicePluginServer.Name(), grpc_health_v1.HealthCheckResponse_SERVING)
+
+			log.Info("Starting gRPC server")
+			return grpcServer.Serve(lis)
+		})
+
+		if du, ok := devicePluginServer.(discovery.DiscoverUpdater); ok {
+			eg.Go(func() error {
+				return discovery.Discovery(ctx, log, du)
+			})
 		}
-		defer cleanup()
+	} else {
+		eg.Go(func() error {
+			lis, cleanup, err := listener(ctx, log, fmt.Sprintf("unix://%s", "/health.sock"))
+			if err != nil {
+				return fmt.Errorf("failed to create grpc listener: %w", err)
+			}
+			defer cleanup()
 
-		log.Info("Starting HTTP server")
-		return httpServer.Serve(lis)
-	})
-	eg.Go(func() error {
-		lis, cleanup, err := listener(ctx, log, devicePluginServer.Socket())
-		if err != nil {
-			return fmt.Errorf("failed to create grpc listener: %w", err)
-		}
-		defer cleanup()
-
-		// Mark server as healthy
-		healthServer.SetServingStatus(devicePluginServer.Name(), grpc_health_v1.HealthCheckResponse_SERVING)
-
-		log.Info("Starting gRPC server")
-		return grpcServer.Serve(lis)
-	})
+			log.Info("Starting gRPC server")
+			return grpcServer.Serve(lis)
+		})
+	}
 
 	log.Info("Plugin is running")
 	return eg.Wait()

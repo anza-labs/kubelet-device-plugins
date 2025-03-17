@@ -23,6 +23,7 @@ import (
 
 	flag "github.com/spf13/pflag"
 	"golang.org/x/sync/errgroup"
+	"google.golang.org/grpc/health"
 
 	"github.com/anza-labs/kubelet-device-plugins/internal/entrypoint"
 	"github.com/anza-labs/kubelet-device-plugins/pkg/servers/tapdeviceplugin"
@@ -71,6 +72,11 @@ func main() {
 func run(ctx context.Context, log *slog.Logger, deviceNames []string) error {
 	eg, ctx := errgroup.WithContext(ctx)
 
+	hs := health.NewServer()
+	eg.Go(func() error {
+		return entrypoint.Run(ctx, log, nil, hs)
+	})
+
 	for _, name := range deviceNames {
 		eg.Go(func() error {
 			tap, err := tapdeviceplugin.New(entrypoint.PluginNamespace, name, maxDevices, log)
@@ -78,7 +84,7 @@ func run(ctx context.Context, log *slog.Logger, deviceNames []string) error {
 				return err
 			}
 
-			return entrypoint.Run(ctx, log, tap)
+			return entrypoint.Run(ctx, log, tap, hs)
 		})
 	}
 

@@ -61,7 +61,7 @@ func main() {
 	)
 	defer stop()
 
-	if err := entrypoint.Run(ctx, log, tun); err != nil {
+	if err := entrypoint.Run(ctx, log, tun, nil); err != nil {
 		log.Error("Critical failure", "error", err)
 		os.Exit(1)
 	}

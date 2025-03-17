@@ -57,7 +57,7 @@ func New(namespace string, devices uint, log *slog.Logger) *Server {
 
 func (s *Server) discover() {
 	if _, err := os.Stat(tunPath); err == nil {
-		s.log.Debug("Discovered tun device")
+		s.log.Debug("Discovered TUN device")
 
 		for i := uint(0); i < s.devices; i++ {
 			s.devs = append(s.devs, &v1beta1.Device{
@@ -66,7 +66,7 @@ func (s *Server) discover() {
 			})
 		}
 	} else {
-		s.log.Error("No tun device found")
+		s.log.Error("No TUN device found")
 	}
 }
 
