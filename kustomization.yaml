@@ -1,13 +1,13 @@
 images:
 - name: kvm
   newName: ghcr.io/anza-labs/kvm-device-plugin
-  newTag: v0.1.1
+  newTag: v0.1.2
 - name: tap
   newName: ghcr.io/anza-labs/tap-device-plugin
-  newTag: v0.1.1
+  newTag: v0.1.2
 - name: tun
   newName: ghcr.io/anza-labs/tun-device-plugin
-  newTag: v0.1.1
+  newTag: v0.1.2
 namePrefix: tun-device-
 namespace: anza-labs-kubelet-plugins
 resources:
