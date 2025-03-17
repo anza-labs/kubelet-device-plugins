@@ -18,6 +18,7 @@ COPY go.sum go.sum
 RUN xx-go mod download
 
 # Copy the go source
+COPY internal/ internal/
 COPY cmd/kvm-device-plugin/main.go cmd/kvm-device-plugin/main.go
 COPY pkg/ pkg/
 

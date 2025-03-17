@@ -18,6 +18,7 @@ COPY go.sum go.sum
 RUN xx-go mod download
 
 # Copy the go source
+COPY internal/ internal/
 COPY cmd/tun-device-plugin/main.go cmd/tun-device-plugin/main.go
 COPY pkg/ pkg/
 
