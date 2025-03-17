@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kvm-plugin
+  labels:
+    app.kubernetes.io/name: kvm-plugin
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  selector:
+    matchLabels:
+      app: kvm-plugin
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: plugin
+      labels:
+        app: kvm-plugin
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - amd64
+                      - arm64
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+      securityContext: {}
+      containers:
+        - name: plugin
+          image: kvm:latest
+          command:
+            - /kvm-device-plugin
+          args:
+            - -log-level=info
+            - -devices=10
+          ports:
+            - name: metrics
+              containerPort: 8080
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: device-plugins
+              mountPath: /var/lib/kubelet/device-plugins
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          livenessProbe:
+            exec:
+              command:
+                - /grpc_health_probe
+                - -addr
+                - unix:///var/lib/kubelet/device-plugins/kvm.sock
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - /grpc_health_probe
+                - -addr
+                - unix:///var/lib/kubelet/device-plugins/kvm.sock
+            initialDelaySeconds: 2
+            periodSeconds: 5
+      volumes:
+        - name: device-plugins
+          hostPath:
+            path: /var/lib/kubelet/device-plugins
+      serviceAccountName: plugin
+      terminationGracePeriodSeconds: 10
