@@ -92,7 +92,7 @@ func parseVersion(version string) (string, error) {
 func createKustomization(resources []string, images []map[string]string) map[string]interface{} {
 	return map[string]interface{}{
 		"namespace":  "anza-labs-kubelet-plugins",
-		"namePrefix": "tun-device-",
+		"namePrefix": "kubelet-",
 		"resources":  resources,
 		"images":     images,
 	}
