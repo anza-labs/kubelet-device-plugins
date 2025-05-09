@@ -54,12 +54,16 @@ test: ## Run tests.
 test-e2e: chainsaw ## Run the e2e tests against a k8s instance using Kyverno Chainsaw.
 	$(CHAINSAW) test ${CHAINSAW_ARGS}
 
+.PHONY: fmt
+fmt: golangci-lint ## Run golangci-lint formatters.
+	$(GOLANGCI_LINT) fmt
+
 .PHONY: lint
-lint: golangci-lint ## Run golangci-lint linter.
+lint: golangci-lint ## Run golangci-lint linters.
 	$(GOLANGCI_LINT) run
 
 .PHONY: lint-fix
-lint-fix: golangci-lint ## Run golangci-lint linter and perform fixes.
+lint-fix: golangci-lint ## Run golangci-lint linters and perform fixes.
 	$(GOLANGCI_LINT) run --fix
 
 .PHONY: lint-manifests
@@ -85,7 +89,7 @@ add-licenses: addlicense ## Run addlicense to append license headers to files mi
 
 .PHONY: diff
 diff: ## Run git diff-index to check if any changes are made.
-	git --no-pager diff HEAD --
+	git --no-pager diff --exit-code HEAD --
 
 .PHONY: release
 release: ## Runs the script that generates new release.
@@ -168,13 +172,13 @@ ADDLICENSE_VERSION ?= v1.1.1
 CHAINSAW_VERSION ?= v0.2.12
 
 # renovate: datasource=github-tags depName=kubernetes-sigs/controller-tools
-CONTROLLER_TOOLS_VERSION ?= v0.17.2
+CONTROLLER_TOOLS_VERSION ?= v0.18.0
 
 # renovate: datasource=github-tags depName=tilt-dev/ctlptl
-CTLPTL_VERSION ?= v0.8.39
+CTLPTL_VERSION ?= v0.8.40
 
 # renovate: datasource=github-tags depName=golangci/golangci-lint
-GOLANGCI_LINT_VERSION ?= v1.64.7
+GOLANGCI_LINT_VERSION ?= v2.1.6
 
 # renovate: datasource=github-tags depName=kubernetes-sigs/kind
 KIND_VERSION ?= v0.27.0
