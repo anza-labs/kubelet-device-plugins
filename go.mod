@@ -10,7 +10,7 @@ require (
 	github.com/spf13/pflag v1.0.6
 	golang.org/x/sync v0.16.0
 	google.golang.org/grpc v1.73.0
-	k8s.io/kubelet v0.33.2
+	k8s.io/kubelet v0.33.3
 	sigs.k8s.io/yaml v1.5.0
 )
 
