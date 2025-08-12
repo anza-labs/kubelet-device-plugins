@@ -1,5 +1,5 @@
 # Easy crosscomple toolkit
-FROM ghcr.io/grpc-ecosystem/grpc-health-probe:v0.4.39 AS probe
+FROM ghcr.io/grpc-ecosystem/grpc-health-probe:v0.4.40 AS probe
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.6.1 AS xx
 
 # Build the plugin binary
