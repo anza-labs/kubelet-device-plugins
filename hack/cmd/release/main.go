@@ -35,6 +35,7 @@ const (
 )
 
 func runCommand(name string, args ...string) error {
+	log.Printf("Running command: %s %s", name, strings.Join(args, " "))
 	cmd := exec.Command(name, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
