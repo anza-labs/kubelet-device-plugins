@@ -17,8 +17,8 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "kind.yaml$"
+      "managerFilePatterns": [
+        "/kind.yaml$/"
       ],
       "matchStrings": [
         "\\s+image:\\s(?<depName>.*?):(?<currentValue>\\S+)"
@@ -26,8 +26,9 @@
       "datasourceTemplate": "docker"
     },
     {
-      "fileMatch": [
-        "^Makefile$"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^Makefile$/"
       ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s[A-Z_]+\\s\\?=\\s(?<currentValue>\\S+)"
