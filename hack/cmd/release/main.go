@@ -123,7 +123,12 @@ func release(version, fullVersion string) error {
 	if err := gitCmd("push", "origin", fmt.Sprintf("release-%s", version)); err != nil {
 		return err
 	}
-	if err := gitCmd("tag", fullVersion); err != nil {
+	if err := gitCmd(
+		"tag",
+		fullVersion,
+		"--message",
+		fmt.Sprintf("release: %s", version),
+	); err != nil {
 		return err
 	}
 	return gitCmd("push", "--tags")
