@@ -114,7 +114,9 @@ func release(version, fullVersion string) error {
 	}
 	if err := gitCmd(
 		"commit",
-		"-sm", fmt.Sprintf("chore(%s): create release commit %s", version, fullVersion),
+		"--signoff",
+		"--allow-empty",
+		"--message", fmt.Sprintf("chore(%s): create release commit %s", version, fullVersion),
 	); err != nil {
 		return err
 	}
