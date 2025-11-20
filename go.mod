@@ -10,14 +10,13 @@ require (
 	github.com/spf13/pflag v1.0.10
 	golang.org/x/sync v0.18.0
 	google.golang.org/grpc v1.77.0
-	k8s.io/kubelet v0.33.4
+	k8s.io/kubelet v0.34.2
 	sigs.k8s.io/yaml v1.6.0
 )
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
