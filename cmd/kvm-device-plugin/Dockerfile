@@ -1,6 +1,6 @@
 # Easy crosscomple toolkit
 FROM ghcr.io/grpc-ecosystem/grpc-health-probe:v0.4.42 AS probe
-FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.8.0 AS xx
+FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.9.0 AS xx
 
 # Build the plugin binary
 FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.25 AS builder
