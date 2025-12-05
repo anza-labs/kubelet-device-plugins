@@ -169,7 +169,7 @@ KUSTOMIZE      ?= $(LOCALBIN)/kustomize
 ADDLICENSE_VERSION ?= v1.2.0
 
 # renovate: datasource=github-tags depName=kyverno/chainsaw
-CHAINSAW_VERSION ?= v0.2.13
+CHAINSAW_VERSION ?= v0.2.14
 
 # renovate: datasource=github-tags depName=kubernetes-sigs/controller-tools
 CONTROLLER_TOOLS_VERSION ?= v0.19.0
