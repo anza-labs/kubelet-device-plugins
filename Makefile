@@ -184,7 +184,7 @@ GOLANGCI_LINT_VERSION ?= v2.7.2
 KIND_VERSION ?= v0.30.0
 
 # renovate: datasource=github-tags depName=stackrox/kube-linter
-KUBE_LINTER_VERSION ?= v0.7.6
+KUBE_LINTER_VERSION ?= v0.8.0
 
 # renovate: datasource=github-tags depName=kubernetes-sigs/kustomize
 KUSTOMIZE_VERSION ?= v5.6.0
