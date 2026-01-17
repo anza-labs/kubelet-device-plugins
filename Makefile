@@ -175,7 +175,7 @@ CHAINSAW_VERSION ?= v0.2.14
 CONTROLLER_TOOLS_VERSION ?= v0.20.0
 
 # renovate: datasource=github-tags depName=tilt-dev/ctlptl
-CTLPTL_VERSION ?= v0.8.44
+CTLPTL_VERSION ?= v0.9.0
 
 # renovate: datasource=github-tags depName=golangci/golangci-lint
 GOLANGCI_LINT_VERSION ?= v2.8.0
