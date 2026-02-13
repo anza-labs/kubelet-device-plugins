@@ -172,7 +172,7 @@ ADDLICENSE_VERSION ?= v1.2.0
 CHAINSAW_VERSION ?= v0.2.14
 
 # renovate: datasource=github-tags depName=kubernetes-sigs/controller-tools
-CONTROLLER_TOOLS_VERSION ?= v0.20.0
+CONTROLLER_TOOLS_VERSION ?= v0.20.1
 
 # renovate: datasource=github-tags depName=tilt-dev/ctlptl
 CTLPTL_VERSION ?= v0.9.0
