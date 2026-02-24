@@ -169,22 +169,22 @@ KUSTOMIZE      ?= $(LOCALBIN)/kustomize
 ADDLICENSE_VERSION ?= v1.2.0
 
 # renovate: datasource=github-tags depName=kyverno/chainsaw
-CHAINSAW_VERSION ?= v0.2.13
+CHAINSAW_VERSION ?= v0.2.14
 
 # renovate: datasource=github-tags depName=kubernetes-sigs/controller-tools
-CONTROLLER_TOOLS_VERSION ?= v0.19.0
+CONTROLLER_TOOLS_VERSION ?= v0.20.1
 
 # renovate: datasource=github-tags depName=tilt-dev/ctlptl
-CTLPTL_VERSION ?= v0.8.43
+CTLPTL_VERSION ?= v0.9.0
 
 # renovate: datasource=github-tags depName=golangci/golangci-lint
-GOLANGCI_LINT_VERSION ?= v2.4.0
+GOLANGCI_LINT_VERSION ?= v2.10.1
 
 # renovate: datasource=github-tags depName=kubernetes-sigs/kind
-KIND_VERSION ?= v0.30.0
+KIND_VERSION ?= v0.31.0
 
 # renovate: datasource=github-tags depName=stackrox/kube-linter
-KUBE_LINTER_VERSION ?= v0.7.5
+KUBE_LINTER_VERSION ?= v0.8.2
 
 # renovate: datasource=github-tags depName=kubernetes-sigs/kustomize
 KUSTOMIZE_VERSION ?= v5.6.0
