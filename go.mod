@@ -1,6 +1,6 @@
 module github.com/anza-labs/kubelet-device-plugins
 
-go 1.24.0
+go 1.26.0
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
