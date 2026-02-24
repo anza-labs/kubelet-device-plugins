@@ -1,35 +1,30 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "automerge": true,
-  "extends": [
-    "config:recommended"
-  ],
-  "labels": [
-    "area/dependency"
-  ],
+  "extends": ["config:recommended"],
+  "labels": ["area/dependency"],
   "vulnerabilityAlerts": {
     "enabled": true
   },
-  "postUpdateOptions": [
-    "gomodTidy",
-    "gomodUpdateImportPaths"
+  "postUpdateOptions": ["gomodTidy", "gomodUpdateImportPaths"],
+  "packageRules": [
+    {
+      "matchManagers": ["gomod"],
+      "matchDepNames": ["go"],
+      "matchDepTypes": ["golang"],
+      "rangeStrategy": "bump"
+    }
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/kind.yaml$/"
-      ],
-      "matchStrings": [
-        "\\s+image:\\s(?<depName>.*?):(?<currentValue>\\S+)"
-      ],
+      "managerFilePatterns": ["/kind.yaml$/"],
+      "matchStrings": ["\\s+image:\\s(?<depName>.*?):(?<currentValue>\\S+)"],
       "datasourceTemplate": "docker"
     },
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/^Makefile$/"
-      ],
+      "managerFilePatterns": ["/^Makefile$/"],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s[A-Z_]+\\s\\?=\\s(?<currentValue>\\S+)"
       ],
