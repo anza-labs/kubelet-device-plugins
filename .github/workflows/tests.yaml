@@ -19,7 +19,7 @@ jobs:
           go install github.com/linuxkit/linuxkit/src/cmd/linuxkit@latest
       - run: |
           make test
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
